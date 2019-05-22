@@ -96,12 +96,22 @@ class Board {
 
   printBoard() {
     for (let i=0; i<3; i++) {
+      console.log(`   |   |   `);
       for (let j=0; j<3; j++) {
         if (this.data[i][j] !== STATE_EMPTY) {
-          process.stdout.write(`${this.data[i][j] === STATE_X ? 'X' : 'O'} `);
+          process.stdout.write(`${this.data[i][j] === STATE_X ? ' X ' : ' O '}`);
         } else {
-          process.stdout.write("    ");
+          process.stdout.write("   ");
         }
+        if (j !== 2) {
+          process.stdout.write("|");
+        }
+      }
+      console.log("");
+      if (i !== 2) {
+        console.log("___|___|___");
+      } else {
+        console.log("   |   |   ");
       }
     }
   }
@@ -193,10 +203,12 @@ class TicTacToe {
   pickPlayer(command) {
     if (command.toUpperCase() === 'X') {
       this.humanPlayer = STATE_X;
+      this.board.printBoard();
       this.promptForNextMove();
     } else if (command.toUpperCase() === 'O') {
       this.humanPlayer = STATE_O;
       this.computerMove();
+      this.promptForNextMove();
     } else {
       process.stdout.write("Invalid input. Pick X or O: ");
     }
@@ -240,11 +252,8 @@ class TicTacToe {
       process.exit(0);
     }
 
-    const finish = this.computerMove();
-
-    if (!finish) {
-      this.promptForNextMove();
-    }
+    this.computerMove();
+    this.promptForNextMove();
   }
 
   computerMove() {
@@ -263,8 +272,6 @@ class TicTacToe {
       console.log("Draw!");
       process.exit(0);
     }
-
-    return false;
   }
 
   get computerPlayer() {
