@@ -4,23 +4,26 @@ const STATE_O = 2;
 
 class Position {
   constructor(i, j) {
-    this.i = i;
-    this.j = j;
+    this.i = i;//row number
+    this.j = j;//column number
   }
 }
 
+//base class
 class Strategy {
   getNextMove(board, player) {
     throw new Error("Not implemented");
   }
 }
 
+//derived class
 class RandomStrategy extends Strategy {
   getNextMove(board, player) {
     return board.randomEmptyPosition();
   }
 }
 
+//derived class
 class BetterStrategy extends Strategy {
   getNextMove(board, player) {
     if (board.isEmpty()) {
@@ -77,8 +80,8 @@ class BetterStrategy extends Strategy {
 
 class Board {
   constructor() {
-    this.data = [];
-    for (let i=0; i<3; i++) {
+    this.data = []; //2D array
+    for (let i=0; i<3; i++) { //nested loops
       this.data.push([]);
       for (let j=0; j<3; j++) {
         this.data[i].push(STATE_EMPTY);
@@ -120,20 +123,20 @@ class Board {
     for (let i=0; i<3; i++) {
       if (this.data[i][0] === player &&
         this.data[i][0] === this.data[i][1] &&
-        this.data[i][1] === this.data[i][2]) {
+        this.data[i][1] === this.data[i][2]) { //row
         return true;
       }
     }
     for (let j=0; j<3; j++) {
       if (this.data[0][j] === player &&
         this.data[0][j] === this.data[1][j] &&
-        this.data[1][j] === this.data[2][j]) {
+        this.data[1][j] === this.data[2][j]) { //column
         return true;
       }
     }
     if (this.data[0][0] === player &&
       this.data[0][0] === this.data[1][1] &&
-      this.data[1][1] === this.data[2][2]) {
+      this.data[1][1] === this.data[2][2]) { //diagonal
       return true;
     }
     return false;
@@ -190,7 +193,7 @@ class TicTacToe {
   start() {
     process.stdout.write("Pick X or O: ");
     process.stdin.on("data", (input) => {
-      const command = input.toString().trim();
+      const command = input.toString().trim(); //e.g. 1,2
 
       if (this.humanPlayer === STATE_EMPTY) {
         this.pickPlayer(command);
